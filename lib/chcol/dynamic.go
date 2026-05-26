@@ -4,13 +4,14 @@ type Dynamic = Variant
 
 // NewDynamic creates a new Dynamic with the given value
 func NewDynamic(v any) Dynamic {
-	return Dynamic{value: v}
+	_ = "STUB: not implemented"
+	return *
+
+	// NewDynamicWithType creates a new Dynamic with the given value and ClickHouse type
+	new(Dynamic)
 }
 
-// NewDynamicWithType creates a new Dynamic with the given value and ClickHouse type
 func NewDynamicWithType(v any, chType string) Dynamic {
-	return Dynamic{
-		value:  v,
-		chType: chType,
-	}
+	_ = "STUB: not implemented"
+	return *new(Dynamic)
 }

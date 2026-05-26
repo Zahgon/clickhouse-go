@@ -2,7 +2,6 @@ package chcol
 
 import (
 	"database/sql/driver"
-	"encoding/json"
 )
 
 // Variant represents a ClickHouse Variant type that can hold multiple possible types
@@ -12,118 +11,55 @@ type Variant struct {
 }
 
 // NewVariant creates a new Variant with the given value
-func NewVariant(v any) Variant {
-	return Variant{
-		value:  v,
-		chType: "",
-	}
-}
+func NewVariant(v any) Variant { _ = "STUB: not implemented"; return *new(Variant) }
 
 // NewVariantWithType creates a new Variant with the given value and ClickHouse type
 func NewVariantWithType(v any, chType string) Variant {
-	return Variant{
-		value:  v,
-		chType: chType,
-	}
+	_ = "STUB: not implemented"
+	return *new(Variant)
 }
 
 // WithType creates a new Variant with the current value and given ClickHouse type
-func (v Variant) WithType(chType string) Variant {
-	return Variant{
-		value:  v.value,
-		chType: chType,
-	}
-}
+func (v Variant) WithType(chType string) Variant { _ = "STUB: not implemented"; return *new(Variant) }
 
 // Type returns the ClickHouse type as a string.
 func (v Variant) Type() string {
-	return v.chType
+	_ = "STUB: not implemented"
+
+	// HasType returns true if the value has a type ClickHouse included.
+	return ""
 }
 
-// HasType returns true if the value has a type ClickHouse included.
-func (v Variant) HasType() bool {
-	return v.chType == ""
-}
+func (v Variant) HasType() bool { _ = "STUB: not implemented"; return false }
 
 // Nil returns true if the underlying value is nil.
-func (v Variant) Nil() bool {
-	return v.value == nil
-}
+func (v Variant) Nil() bool { _ = "STUB: not implemented"; return false }
 
 // Any returns the underlying value as any.
 func (v Variant) Any() any {
-	return v.value
+	_ = "STUB: not implemented"
+
+	// Scan implements the sql.Scanner interface
+	return *new(any)
 }
 
-// Scan implements the sql.Scanner interface
-func (v *Variant) Scan(value any) error {
-	switch vv := value.(type) {
-	case Variant:
-		v.value = vv.value
-		v.chType = vv.chType
-	case *Variant:
-		v.value = vv.value
-		v.chType = vv.chType
-	default:
-		v.value = value
-	}
-
-	return nil
-}
+func (v *Variant) Scan(value any) error { _ = "STUB: not implemented"; return nil }
 
 // Value implements the driver.Valuer interface
 func (v Variant) Value() (driver.Value, error) {
-	return v, nil
+	_ = "STUB: not implemented"
+
+	// MarshalJSON implements the json.Marshaler interface
+	return *new(driver.Value), nil
 }
 
-// MarshalJSON implements the json.Marshaler interface
-func (v Variant) MarshalJSON() ([]byte, error) {
-	if v.Nil() {
-		return []byte("null"), nil
-	}
-
-	return json.Marshal(v.value)
-}
+func (v Variant) MarshalJSON() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // UnmarshalJSON implements the json.Unmarshaler interface
-func (v *Variant) UnmarshalJSON(data []byte) error {
-	if string(data) == "null" {
-		v.value = nil
-		return nil
-	}
-
-	if err := json.Unmarshal(data, &v.value); err != nil {
-		return err
-	}
-
-	return nil
-}
+func (v *Variant) UnmarshalJSON(data []byte) error { _ = "STUB: not implemented"; return nil }
 
 // MarshalText implements the encoding.TextMarshaler interface
-func (v Variant) MarshalText() ([]byte, error) {
-	if v.Nil() {
-		return []byte(""), nil
-	}
-
-	switch vv := v.value.(type) {
-	case string:
-		return []byte(vv), nil
-	case []byte:
-		return vv, nil
-	case json.RawMessage:
-		return vv, nil
-	}
-
-	return json.Marshal(v.value)
-}
+func (v Variant) MarshalText() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // UnmarshalText implements the encoding.TextUnmarshaler interface
-func (v *Variant) UnmarshalText(text []byte) error {
-	if len(text) == 0 {
-		v.value = nil
-		return nil
-	}
-
-	v.value = string(text)
-	return nil
-}
+func (v *Variant) UnmarshalText(text []byte) error { _ = "STUB: not implemented"; return nil }

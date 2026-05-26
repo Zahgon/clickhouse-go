@@ -3,14 +3,4 @@
 
 package binary
 
-func Str2Bytes(str string, expectedLen int) []byte {
-	b := unsafeStr2Bytes(str)
-
-	if len(str) < expectedLen {
-		extended := make([]byte, expectedLen)
-		copy(extended, b)
-		return extended
-	}
-
-	return b
-}
+func Str2Bytes(str string, expectedLen int) []byte { _ = "STUB: not implemented"; return nil }

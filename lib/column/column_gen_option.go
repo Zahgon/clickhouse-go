@@ -10,20 +10,17 @@ var colStrProvider ColStrProvider = defaultColStrProvider
 
 // defaultColStrProvider defines sample provider for proto.ColStr
 func defaultColStrProvider(string) proto.ColStr {
-	return proto.ColStr{}
+	_ = "STUB: not implemented"
+	return *
+
+	// issue: https://github.com/ClickHouse/clickhouse-go/issues/1164
+	// WithAllocBufferColStrProvider allow pre alloc buffer cap for proto.ColStr
+	//
+	//	It is more suitable for scenarios where a lot of data is written in batches
+	new(proto.ColStr)
 }
 
-// issue: https://github.com/ClickHouse/clickhouse-go/issues/1164
-// WithAllocBufferColStrProvider allow pre alloc buffer cap for proto.ColStr
-//
-//	It is more suitable for scenarios where a lot of data is written in batches
-func WithAllocBufferColStrProvider(cap int) {
-	colStrProvider = func(string) proto.ColStr {
-		return proto.ColStr{Buf: make([]byte, 0, cap)}
-	}
-}
+func WithAllocBufferColStrProvider(cap int) { _ = "STUB: not implemented"; return }
 
 // WithColStrProvider more flexible than WithAllocBufferColStrProvider, such as use sync.Pool
-func WithColStrProvider(provider ColStrProvider) {
-	colStrProvider = provider
-}
+func WithColStrProvider(provider ColStrProvider) { _ = "STUB: not implemented"; return }

@@ -13,150 +13,61 @@ type Queue[T any] struct {
 }
 
 // New creates a new circular queue with the given capacity.
-func New[T any](capacity int) *Queue[T] {
-	return &Queue[T]{data: make([]T, capacity)}
-}
+func New[T any](capacity int) *Queue[T] { _ = "STUB: not implemented"; return nil }
 
 // Len returns the number of elements in the queue.
 func (q *Queue[T]) Len() int {
-	return q.len
+	_ = "STUB: not implemented"
+
+	// Cap returns the capacity of the queue.
+	return 0
 }
 
-// Cap returns the capacity of the queue.
 func (q *Queue[T]) Cap() int {
-	return len(q.data)
+	_ = "STUB: not implemented"
+
+	// IsFull returns true if the queue is at capacity.
+	return 0
 }
 
-// IsFull returns true if the queue is at capacity.
-func (q *Queue[T]) IsFull() bool {
-	return q.len == len(q.data)
-}
+func (q *Queue[T]) IsFull() bool { _ = "STUB: not implemented"; return false }
 
 // IsEmpty returns true if the queue is empty.
 func (q *Queue[T]) IsEmpty() bool {
-	return q.len == 0
+	_ = "STUB: not implemented"
+
+	// Push adds an element to the tail of the queue.
+	// Returns false if the queue is full.
+	return false
 }
 
-// Push adds an element to the tail of the queue.
-// Returns false if the queue is full.
-func (q *Queue[T]) Push(value T) bool {
-	if q.IsFull() {
-		return false
-	}
-
-	q.data[q.tail] = value
-	q.tail = q.next(q.tail)
-	q.len++
-	return true
-}
+func (q *Queue[T]) Push(value T) bool { _ = "STUB: not implemented"; return false }
 
 // Pull removes and returns an element from the head of the queue.
 // Returns the zero value and false if the queue is empty.
-func (q *Queue[T]) Pull() (value T, ok bool) {
-	if q.IsEmpty() {
-		return
-	}
-
-	value = q.data[q.head]
-	var zero T
-	q.data[q.head] = zero
-	q.head = q.next(q.head)
-	q.len--
-	return value, true
-}
+func (q *Queue[T]) Pull() (value T, ok bool) { _ = "STUB: not implemented"; return *new(T), false }
 
 // all returns an iterator over all elements in the queue in FIFO order.
 // The iterator yields (index, value) pairs where index is 0-based from the head.
-func (q *Queue[T]) all() iter.Seq2[int, T] {
-	return func(yield func(int, T) bool) {
-		if q.IsEmpty() {
-			return
-		}
-
-		current := q.head
-		for idx := 0; idx < q.len; idx++ {
-			if !yield(idx, q.data[current]) {
-				return
-			}
-			current = q.next(current)
-		}
-	}
-}
+func (q *Queue[T]) all() iter.Seq2[int, T] { _ = "STUB: not implemented"; return nil }
 
 // DeleteFunc removes elements from the queue based on a predicate function.
 // Returns an iterator over the removed elements.
 // Elements for which shouldRemove returns true are removed from the queue.
 func (q *Queue[T]) DeleteFunc(shouldRemove func(T) bool) (removed iter.Seq[T]) {
-	return func(yield func(T) bool) {
-		if q.IsEmpty() {
-			return
-		}
-
-		newTail := q.head
-		current := q.head
-		stopYielding := false
-		newLen := 0
-
-		for i := 0; i < q.len; i++ {
-			value := q.data[current]
-			var zero T
-
-			if !shouldRemove(value) {
-				// Keep this element - move it to newTail if needed
-				if current != newTail {
-					q.data[newTail] = value
-					q.data[current] = zero
-				}
-				newTail = q.next(newTail)
-				current = q.next(current)
-				newLen++
-				continue
-			}
-
-			// Remove this element
-			q.data[current] = zero
-			current = q.next(current)
-
-			// Try to yield the removed value if we haven't stopped
-			stopYielding = stopYielding || !yield(value)
-		}
-
-		q.tail = newTail
-		q.len = newLen
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// Keep this element - move it to newTail if needed
+
+// Remove this element
+
+// Try to yield the removed value if we haven't stopped
 
 // Clear removes all elements from the queue.
 // Returns an iterator over the removed elements.
-func (q *Queue[T]) Clear() iter.Seq[T] {
-	return func(yield func(T) bool) {
-		if q.IsEmpty() {
-			return
-		}
-
-		current := q.head
-		stopYielding := false
-
-		for i := 0; i < q.len; i++ {
-			value := q.data[current]
-			var zero T
-			q.data[current] = zero
-			current = q.next(current)
-
-			stopYielding = stopYielding || !yield(value)
-		}
-
-		q.head = 0
-		q.tail = 0
-		q.len = 0
-	}
-}
+func (q *Queue[T]) Clear() iter.Seq[T] { _ = "STUB: not implemented"; return nil }
 
 // next returns the next index in the circular queue.
-func (q *Queue[T]) next(index int) int {
-	index++
-	if index >= len(q.data) {
-		return 0
-	}
-	return index
-}
+func (q *Queue[T]) next(index int) int { _ = "STUB: not implemented"; return 0 }

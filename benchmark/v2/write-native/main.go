@@ -18,24 +18,7 @@ CREATE TABLE benchmark (
 ) Engine Null
 `
 
-func benchmark(conn clickhouse.Conn) error {
-	batch, err := conn.PrepareBatch(context.Background(), "INSERT INTO benchmark")
-	if err != nil {
-		return err
-	}
-	for i := 0; i < 1_000_000; i++ {
-		err := batch.Append(
-			uint64(i),
-			"Golang SQL database driver",
-			[]uint8{1, 2, 3, 4, 5, 6, 7, 8, 9},
-			time.Now(),
-		)
-		if err != nil {
-			return err
-		}
-	}
-	return batch.Send()
-}
+func benchmark(conn clickhouse.Conn) error { _ = "STUB: not implemented"; return nil }
 
 func main() {
 	var (

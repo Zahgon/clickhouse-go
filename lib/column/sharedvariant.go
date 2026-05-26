@@ -12,46 +12,33 @@ type SharedVariant struct {
 	stringData String
 }
 
-func (c *SharedVariant) Name() string {
-	return c.name
-}
+func (c *SharedVariant) Name() string { _ = "STUB: not implemented"; return "" }
 
-func (c *SharedVariant) Type() Type {
-	return "SharedVariant"
-}
+func (c *SharedVariant) Type() Type { _ = "STUB: not implemented"; return *new(Type) }
 
-func (c *SharedVariant) Rows() int {
-	return c.stringData.Rows()
-}
+func (c *SharedVariant) Rows() int { _ = "STUB: not implemented"; return 0 }
 
-func (c *SharedVariant) Row(i int, ptr bool) any {
-	return c.stringData.Row(i, ptr)
-}
+func (c *SharedVariant) Row(i int, ptr bool) any { _ = "STUB: not implemented"; return *new(any) }
 
-func (c *SharedVariant) ScanRow(dest any, row int) error {
-	return c.stringData.ScanRow(dest, row)
-}
+func (c *SharedVariant) ScanRow(dest any, row int) error { _ = "STUB: not implemented"; return nil }
 
 func (c *SharedVariant) Append(v any) (nulls []uint8, err error) {
-	return c.stringData.Append(v)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (c *SharedVariant) AppendRow(v any) error {
-	return c.stringData.AppendRow(v)
-}
+func (c *SharedVariant) AppendRow(v any) error { _ = "STUB: not implemented"; return nil }
 
-func (c *SharedVariant) Encode(buffer *proto.Buffer) {
-	c.stringData.Encode(buffer)
-}
+func (c *SharedVariant) Encode(buffer *proto.Buffer) { _ = "STUB: not implemented"; return }
 
 func (c *SharedVariant) Decode(reader *proto.Reader, rows int) error {
-	return c.stringData.Decode(reader, rows)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (c *SharedVariant) ScanType() reflect.Type {
-	return c.stringData.ScanType()
+	_ = "STUB: not implemented"
+	return *new(reflect.Type)
 }
 
-func (c *SharedVariant) Reset() {
-	c.stringData.Reset()
-}
+func (c *SharedVariant) Reset() { _ = "STUB: not implemented"; return }

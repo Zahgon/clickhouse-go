@@ -13,7 +13,6 @@ import (
 	"net/http"
 	_ "net/http/pprof"
 
-	"github.com/google/uuid"
 	_ "github.com/mkevac/debugcharts"
 
 	"github.com/ClickHouse/clickhouse-go/v2"
@@ -25,71 +24,11 @@ type App struct {
 	signal chan os.Signal
 }
 
-func (app *App) invalidPrepare() {
-	var i int
-	for range time.Tick(time.Minute) {
-		i++
-		switch {
-		case i%2 == 0:
-			app.conn.PrepareBatch(context.Background(), "INSERT INTO x")
-		default:
-			batch, err := app.conn.PrepareBatch(context.Background(), "INSERT INTO stress")
-			if err != nil {
-				log.Fatal(err)
-			}
-			batch.Append(1, 1, 1, 1, 1)
-		}
-	}
-}
+func (app *App) invalidPrepare() { _ = "STUB: not implemented"; return }
 
-func (app *App) worker() {
-	for range time.Tick(time.Second) {
-		app.batch()
-	}
-}
+func (app *App) worker() { _ = "STUB: not implemented"; return }
 
-func (app *App) batch() {
-	batch, err := app.conn.PrepareBatch(context.Background(), "INSERT INTO stress")
-	if err != nil {
-		log.Fatal("PrepareBatch", err)
-	}
-	for i := 0; i < 150_000; i++ {
-		err := batch.Append(
-			uint8(1),
-			uuid.New(),
-			time.Now(),
-			[][]time.Time{
-				{
-					time.Now(),
-					time.Now(),
-				},
-				{
-					time.Now(),
-					time.Now(),
-				},
-				{
-					time.Now(),
-					time.Now(),
-				},
-			},
-			map[string]string{
-				"key":  "value",
-				"key1": "value1",
-				"key2": "value2",
-				"key3": "value3",
-				"key4": "value4",
-				"key5": "value5",
-				"key6": "value6",
-			},
-		)
-		if err != nil {
-			log.Fatal("Append", err)
-		}
-	}
-	if err := batch.Send(); err != nil {
-		log.Fatal("Send", err)
-	}
-}
+func (app *App) batch() { _ = "STUB: not implemented"; return }
 
 const ddl = `
 CREATE TABLE stress (

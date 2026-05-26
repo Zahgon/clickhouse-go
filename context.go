@@ -2,8 +2,6 @@ package clickhouse
 
 import (
 	"context"
-	"maps"
-	"slices"
 	"time"
 
 	"go.opentelemetry.io/otel/trace"
@@ -62,290 +60,119 @@ type (
 )
 
 func WithSpan(span trace.SpanContext) QueryOption {
-	return func(o *QueryOptions) error {
-		o.span = span
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(QueryOption)
 }
 
-func WithQueryID(queryID string) QueryOption {
-	return func(o *QueryOptions) error {
-		o.queryID = queryID
-		return nil
-	}
-}
+func WithQueryID(queryID string) QueryOption { _ = "STUB: not implemented"; return *new(QueryOption) }
 
 func WithBlockBufferSize(size uint8) QueryOption {
-	return func(o *QueryOptions) error {
-		o.blockBufferSize = size
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(QueryOption)
 }
 
-func WithQuotaKey(quotaKey string) QueryOption {
-	return func(o *QueryOptions) error {
-		o.quotaKey = quotaKey
-		return nil
-	}
-}
+func WithQuotaKey(quotaKey string) QueryOption { _ = "STUB: not implemented"; return *new(QueryOption) }
 
 // WithJWT overrides the existing authentication with the given JWT.
 // This only applies for clients connected with HTTPS to ClickHouse Cloud.
-func WithJWT(jwt string) QueryOption {
-	return func(o *QueryOptions) error {
-		o.jwt = jwt
-		return nil
-	}
-}
+func WithJWT(jwt string) QueryOption { _ = "STUB: not implemented"; return *new(QueryOption) }
 
 // WithColumnNamesAndTypes is used to provide a predetermined list of
 // column names and types for HTTP inserts.
 // Without this, the HTTP implementation will parse the query and run a
 // DESCRIBE TABLE request to fetch and validate column names.
 func WithColumnNamesAndTypes(columnNamesAndTypes []ColumnNameAndType) QueryOption {
-	return func(o *QueryOptions) error {
-		o.columnNamesAndTypes = columnNamesAndTypes
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(QueryOption)
 }
 
 // WithClientInfo appends client info data to the query, visible in the system.query_log table.
 // This does not replace the client info provided in the connection options, it appends to it.
 // Can be called multiple times to append more info.
-func WithClientInfo(ci ClientInfo) QueryOption {
-	return func(o *QueryOptions) error {
-		o.clientInfo = o.clientInfo.Append(ci)
-		return nil
-	}
-}
+func WithClientInfo(ci ClientInfo) QueryOption { _ = "STUB: not implemented"; return *new(QueryOption) }
 
 func WithSettings(settings Settings) QueryOption {
-	return func(o *QueryOptions) error {
-		o.settings = settings
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(QueryOption)
 }
 
 func WithParameters(params Parameters) QueryOption {
-	return func(o *QueryOptions) error {
-		o.parameters = params
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(QueryOption)
 }
 
-func WithLogs(fn func(*Log)) QueryOption {
-	return func(o *QueryOptions) error {
-		o.events.logs = fn
-		return nil
-	}
-}
+func WithLogs(fn func(*Log)) QueryOption { _ = "STUB: not implemented"; return *new(QueryOption) }
 
 func WithProgress(fn func(*Progress)) QueryOption {
-	return func(o *QueryOptions) error {
-		o.events.progress = fn
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(QueryOption)
 }
 
 func WithProfileInfo(fn func(*ProfileInfo)) QueryOption {
-	return func(o *QueryOptions) error {
-		o.events.profileInfo = fn
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(QueryOption)
 }
 
 func WithProfileEvents(fn func([]ProfileEvent)) QueryOption {
-	return func(o *QueryOptions) error {
-		o.events.profileEvents = fn
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(QueryOption)
 }
 
 func WithExternalTable(t ...*ext.Table) QueryOption {
-	return func(o *QueryOptions) error {
-		o.external = append(o.external, t...)
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(QueryOption)
 }
 
-func WithAsync(wait bool) QueryOption {
-	return func(o *QueryOptions) error {
-		o.async.ok, o.async.wait = true, wait
-		return nil
-	}
-}
+func WithAsync(wait bool) QueryOption { _ = "STUB: not implemented"; return *new(QueryOption) }
 
 // Deprecated: use `WithAsync` instead.
-func WithStdAsync(wait bool) QueryOption {
-	return func(o *QueryOptions) error {
-		o.async.ok, o.async.wait = true, wait
-		return nil
-	}
-}
+func WithStdAsync(wait bool) QueryOption { _ = "STUB: not implemented"; return *new(QueryOption) }
 
 func WithUserLocation(location *time.Location) QueryOption {
-	return func(o *QueryOptions) error {
-		o.userLocation = location
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return *new(QueryOption)
 }
 
-func ignoreExternalTables() QueryOption {
-	return func(o *QueryOptions) error {
-		o.external = nil
-		return nil
-	}
-}
+func ignoreExternalTables() QueryOption { _ = "STUB: not implemented"; return *new(QueryOption) }
 
 // Context returns a derived context with the given ClickHouse QueryOptions.
 // Existing QueryOptions will be overwritten per option if present.
 // The QueryOptions Settings map will be initialized if nil.
 func Context(parent context.Context, options ...QueryOption) context.Context {
-	var opt QueryOptions
-	if ctxOpt, ok := parent.Value(_contextOptionKey).(QueryOptions); ok {
-		opt = ctxOpt
-	}
-
-	for _, f := range options {
-		f(&opt)
-	}
-
-	if opt.settings == nil {
-		opt.settings = make(Settings)
-	}
-
-	return context.WithValue(parent, _contextOptionKey, opt)
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 // queryOptions returns a mutable copy of the QueryOptions struct within the given context.
 // If ClickHouse context was not provided, an empty struct with a valid Settings map is returned.
 // If the context has a deadline greater than 1s then max_execution_time setting is appended.
 func queryOptions(ctx context.Context) QueryOptions {
-	var opt QueryOptions
-
-	if ctxOpt, ok := ctx.Value(_contextOptionKey).(QueryOptions); ok {
-		opt = ctxOpt.clone()
-	} else {
-		opt = QueryOptions{
-			settings: make(Settings),
-		}
-	}
-
-	deadline, ok := ctx.Deadline()
-	if !ok {
-		return opt
-	}
-
-	if sec := time.Until(deadline).Seconds(); sec > 1 {
-		opt.settings["max_execution_time"] = int(sec + 5)
-	}
-
-	return opt
+	_ = "STUB: not implemented"
+	return *new(QueryOptions)
 }
 
 // queryOptionsJWT returns the JWT within the given context's QueryOptions.
 // Empty string if not present.
-func queryOptionsJWT(ctx context.Context) string {
-	if opt, ok := ctx.Value(_contextOptionKey).(QueryOptions); ok {
-		return opt.jwt
-	}
-
-	return ""
-}
+func queryOptionsJWT(ctx context.Context) string { _ = "STUB: not implemented"; return "" }
 
 // queryOptionsAsync returns the AsyncOptions struct within the given context's QueryOptions.
 func queryOptionsAsync(ctx context.Context) AsyncOptions {
-	if opt, ok := ctx.Value(_contextOptionKey).(QueryOptions); ok {
-		return opt.async
-	}
-
-	return AsyncOptions{}
+	_ = "STUB: not implemented"
+	return *new(AsyncOptions)
 }
 
 // queryOptionsUserLocation returns the *time.Location within the given context's QueryOptions.
 func queryOptionsUserLocation(ctx context.Context) *time.Location {
-	if opt, ok := ctx.Value(_contextOptionKey).(QueryOptions); ok {
-		return opt.userLocation
-	}
-
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // WithoutProfileEvents instructs the server not to send profile events for this query.
 // This is a performance optimization for servers >= 25.11 that support the send_profile_events setting.
 // On older servers, the setting is unknown and the server will return an error.
-func WithoutProfileEvents() QueryOption {
-	return func(o *QueryOptions) error {
-		if o.settings == nil {
-			o.settings = make(Settings)
-		}
-		o.settings["send_profile_events"] = 0
-		return nil
-	}
-}
+func WithoutProfileEvents() QueryOption { _ = "STUB: not implemented"; return *new(QueryOption) }
 
-func (q *QueryOptions) onProcess() *onProcess {
-	onProcess := &onProcess{
-		logs: func(logs []Log) {
-			if q.events.logs != nil {
-				for _, l := range logs {
-					q.events.logs(&l)
-				}
-			}
-		},
-		progress: func(p *Progress) {
-			if q.events.progress != nil {
-				q.events.progress(p)
-			}
-		},
-		profileInfo: func(p *ProfileInfo) {
-			if q.events.profileInfo != nil {
-				q.events.profileInfo(p)
-			}
-		},
-	}
-
-	profileEventsHandler := q.events.profileEvents
-	if profileEventsHandler != nil {
-		onProcess.profileEvents = func(events []ProfileEvent) {
-			profileEventsHandler(events)
-		}
-	}
-
-	return onProcess
-}
+func (q *QueryOptions) onProcess() *onProcess { _ = "STUB: not implemented"; return nil }
 
 // clone returns a copy of QueryOptions where Settings and Parameters are safely mutable.
-func (q *QueryOptions) clone() QueryOptions {
-	c := QueryOptions{
-		span:                q.span,
-		async:               q.async,
-		queryID:             q.queryID,
-		quotaKey:            q.quotaKey,
-		events:              q.events,
-		settings:            nil,
-		parameters:          nil,
-		external:            q.external,
-		blockBufferSize:     q.blockBufferSize,
-		userLocation:        q.userLocation,
-		columnNamesAndTypes: nil,
-	}
-
-	if q.settings != nil {
-		c.settings = maps.Clone(q.settings)
-	}
-
-	if q.parameters != nil {
-		c.parameters = maps.Clone(q.parameters)
-	}
-
-	if q.columnNamesAndTypes != nil {
-		c.columnNamesAndTypes = slices.Clone(q.columnNamesAndTypes)
-	}
-
-	if q.clientInfo.Products != nil || q.clientInfo.Comment != nil {
-		c.clientInfo = q.clientInfo.Append(ClientInfo{})
-	}
-
-	return c
-}
+func (q *QueryOptions) clone() QueryOptions { _ = "STUB: not implemented"; return *new(QueryOptions) }

@@ -1,9 +1,6 @@
 package column
 
 import (
-	"database/sql"
-	"database/sql/driver"
-	"fmt"
 	"reflect"
 	"time"
 
@@ -27,238 +24,51 @@ type Date struct {
 }
 
 func (col *Date) parse(t Type, tz *time.Location) (_ *Date, err error) {
-	col.location = tz
-	return col, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (col *Date) Reset() {
-	col.col.Reset()
-}
+func (col *Date) Reset() { _ = "STUB: not implemented"; return }
 
-func (col *Date) Name() string {
-	return col.name
-}
+func (col *Date) Name() string { _ = "STUB: not implemented"; return "" }
 
-func (col *Date) Type() Type {
-	return "Date"
-}
+func (col *Date) Type() Type { _ = "STUB: not implemented"; return *new(Type) }
 
-func (col *Date) ScanType() reflect.Type {
-	return scanTypeTime
-}
+func (col *Date) ScanType() reflect.Type { _ = "STUB: not implemented"; return *new(reflect.Type) }
 
-func (col *Date) Rows() int {
-	return col.col.Rows()
-}
+func (col *Date) Rows() int { _ = "STUB: not implemented"; return 0 }
 
-func (col *Date) Row(i int, ptr bool) any {
-	value := col.row(i)
-	if ptr {
-		return &value
-	}
-	return value
-}
+func (col *Date) Row(i int, ptr bool) any { _ = "STUB: not implemented"; return *new(any) }
 
-func (col *Date) ScanRow(dest any, row int) error {
-	switch d := dest.(type) {
-	case *time.Time:
-		*d = col.row(row)
-	case **time.Time:
-		*d = new(time.Time)
-		**d = col.row(row)
-	case *sql.NullTime:
-		return d.Scan(col.row(row))
-	default:
-		if scan, ok := dest.(sql.Scanner); ok {
-			return scan.Scan(col.row(row))
-		}
-		return &ColumnConverterError{
-			Op:   "ScanRow",
-			To:   fmt.Sprintf("%T", dest),
-			From: "Date",
-		}
-	}
-	return nil
-}
+func (col *Date) ScanRow(dest any, row int) error { _ = "STUB: not implemented"; return nil }
 
 func (col *Date) Append(v any) (nulls []uint8, err error) {
-	switch v := v.(type) {
-	case []time.Time:
-		for _, t := range v {
-			col.col.Append(t)
-		}
-	case []*time.Time:
-		nulls = make([]uint8, len(v))
-		for i, v := range v {
-			switch {
-			case v != nil:
-				col.col.Append(*v)
-			default:
-				nulls[i] = 1
-				col.col.Append(time.Time{})
-			}
-		}
-	case []sql.NullTime:
-		nulls = make([]uint8, len(v))
-		for i := range v {
-			col.AppendRow(v[i])
-		}
-	case []*sql.NullTime:
-		nulls = make([]uint8, len(v))
-		for i := range v {
-			if v[i] == nil {
-				nulls[i] = 1
-			}
-			col.AppendRow(v[i])
-		}
-	case []string:
-		nulls = make([]uint8, len(v))
-		for i := range v {
-			value, err := col.parseDate(v[i])
-			if err != nil {
-				return nil, err
-			}
-			col.col.Append(value)
-		}
-	case []*string:
-		nulls = make([]uint8, len(v))
-		for i := range v {
-			if v[i] == nil || *v[i] == "" {
-				nulls[i] = 1
-				col.col.Append(time.Time{})
-			} else {
-				value, err := col.parseDate(*v[i])
-				if err != nil {
-					return nil, err
-				}
-				col.col.Append(value)
-			}
-		}
-	default:
-		if valuer, ok := v.(driver.Valuer); ok {
-			val, err := valuer.Value()
-			if err != nil {
-				return nil, &ColumnConverterError{
-					Op:   "Append",
-					To:   "Date",
-					From: fmt.Sprintf("%T", v),
-					Hint: "could not get driver.Valuer value",
-				}
-			}
-			return col.Append(val)
-		}
-		return nil, &ColumnConverterError{
-			Op:   "Append",
-			To:   "Date",
-			From: fmt.Sprintf("%T", v),
-		}
-	}
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (col *Date) AppendRow(v any) error {
-	switch v := v.(type) {
-	case time.Time:
-		col.col.Append(v)
-	case *time.Time:
-		switch {
-		case v != nil:
-			col.col.Append(*v)
-		default:
-			col.col.Append(time.Time{})
-		}
-	case sql.NullTime:
-		switch v.Valid {
-		case true:
-			col.col.Append(v.Time)
-		default:
-			col.col.Append(time.Time{})
-		}
-	case *sql.NullTime:
-		switch v.Valid {
-		case true:
-			col.col.Append(v.Time)
-		default:
-			col.col.Append(time.Time{})
-		}
-	case nil:
-		col.col.Append(time.Time{})
-	case string:
-		datetime, err := col.parseDate(v)
-		if err != nil {
-			return err
-		}
-		col.col.Append(datetime)
-	case *string:
-		if v == nil || *v == "" {
-			col.col.Append(time.Time{})
-		} else {
-			datetime, err := col.parseDate(*v)
-			if err != nil {
-				return err
-			}
-			col.col.Append(datetime)
-		}
-	default:
-		if valuer, ok := v.(driver.Valuer); ok {
-			val, err := valuer.Value()
-			if err != nil {
-				return &ColumnConverterError{
-					Op:   "AppendRow",
-					To:   "Date",
-					From: fmt.Sprintf("%T", v),
-					Hint: "could not get driver.Valuer value",
-				}
-			}
-			return col.AppendRow(val)
-		}
-		s, ok := v.(fmt.Stringer)
-		if ok {
-			return col.AppendRow(s.String())
-		}
-		return &ColumnConverterError{
-			Op:   "AppendRow",
-			To:   "Date",
-			From: fmt.Sprintf("%T", v),
-		}
-	}
-	return nil
-}
+func (col *Date) AppendRow(v any) error { _ = "STUB: not implemented"; return nil }
 
 func parseDate(value string, minDate time.Time, maxDate time.Time, location *time.Location) (tv time.Time, err error) {
-	if location == nil {
-		location = time.Local
-	}
-	if tv, err = time.Parse(defaultDateFormatWithZone, value); err == nil {
-		return tv, nil
-	}
-	if tv, err = time.Parse(defaultDateFormatNoZone, value); err == nil {
-		return getTimeWithDifferentLocation(tv, location), nil
-	}
-	return time.Time{}, err
+	_ = "STUB: not implemented"
+	return *new(time.Time), nil
 }
 
 func (col *Date) parseDate(value string) (tv time.Time, err error) {
-	return parseDate(value, minDate, maxDate, col.location)
+	_ = "STUB: not implemented"
+	return *new(time.Time), nil
 }
 
 func (col *Date) Decode(reader *proto.Reader, rows int) error {
-	return col.col.DecodeColumn(reader, rows)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (col *Date) Encode(buffer *proto.Buffer) {
-	col.col.EncodeColumn(buffer)
-}
+func (col *Date) Encode(buffer *proto.Buffer) { _ = "STUB: not implemented"; return }
 
-func (col *Date) row(i int) time.Time {
-	t := col.col.Row(i)
+func (col *Date) row(i int) time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
-	if col.location != nil && col.location != time.UTC {
-		// proto.Date is normalized as time.Time with UTC timezone.
-		// We make sure Date return from ClickHouse matches server timezone or user defined location.
-		t = getTimeWithDifferentLocation(t, col.location)
-	}
-	return t
-}
+// proto.Date is normalized as time.Time with UTC timezone.
+// We make sure Date return from ClickHouse matches server timezone or user defined location.
 
 var _ Interface = (*Date)(nil)

@@ -1,13 +1,9 @@
 package main
 
 import (
-	"bytes"
 	_ "embed"
 	"fmt"
-	"go/format"
 	"log"
-	"os"
-	"path"
 	"sort"
 	"text/template"
 )
@@ -127,25 +123,9 @@ func init() {
 	}...)
 
 }
-func write(name string, v any, t *template.Template) error {
-	out := new(bytes.Buffer)
-	if err := t.Execute(out, v); err != nil {
-		return err
-	}
-	//	fmt.Println(out.String())
-	data, err := format.Source(out.Bytes())
-	if err != nil {
-		return err
-	}
-	cwd, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-	if err := os.WriteFile(path.Join(cwd, fmt.Sprintf("lib/column/%s.go", name)), data, 0o600); err != nil {
-		return err
-	}
-	return nil
-}
+func write(name string, v any, t *template.Template) error { _ = "STUB: not implemented"; return nil }
+
+//	fmt.Println(out.String())
 
 func main() {
 	for name, tpl := range map[string]struct {
@@ -164,33 +144,6 @@ func main() {
 
 const maxByte = 1<<8 - 1
 
-func isDigit(d byte) bool {
-	return '0' <= d && d <= '9'
-}
+func isDigit(d byte) bool { _ = "STUB: not implemented"; return false }
 
-func sequenceKey(key string) string {
-	sKey := make([]byte, 0, len(key)+8)
-	j := -1
-	for i := 0; i < len(key); i++ {
-		b := key[i]
-		if !isDigit(b) {
-			sKey = append(sKey, b)
-			j = -1
-			continue
-		}
-		if j == -1 {
-			sKey = append(sKey, 0x00)
-			j = len(sKey) - 1
-		}
-		if sKey[j] == 1 && sKey[j+1] == '0' {
-			sKey[j+1] = b
-			continue
-		}
-		if sKey[j]+1 > maxByte {
-			panic("sequenceKey: invalid key")
-		}
-		sKey = append(sKey, b)
-		sKey[j]++
-	}
-	return string(sKey)
-}
+func sequenceKey(key string) string { _ = "STUB: not implemented"; return "" }

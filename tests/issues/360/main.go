@@ -66,50 +66,8 @@ func main() {
 	}
 }
 
-func testInsert() {
-	var (
-		tx, _   = conn.Begin()
-		stmt, _ = tx.Prepare("INSERT INTO example (country_code, os_id, browser_id, action_day, action_time) VALUES (?, ?, ?, ?, ?)")
-	)
-	defer stmt.Close()
+func testInsert() { _ = "STUB: not implemented"; return }
 
-	for i := 0; i < 100; i++ {
-		if _, err := stmt.Exec(
-			"RU",
-			10+i,
-			100+i,
-			time.Now(),
-			time.Now(),
-		); err != nil {
-			log.Fatal(err)
-		}
-	}
+func testQuery() { _ = "STUB: not implemented"; return }
 
-	if err := tx.Commit(); err != nil {
-		log.Fatal(err)
-	}
-}
-
-func testQuery() {
-	rows, err := conn.Query("SELECT country_code, os_id, browser_id, categories, action_day, action_time FROM example")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer rows.Close()
-	var (
-		country               string
-		os, browser           uint8
-		categories            []int16
-		actionDay, actionTime time.Time
-	)
-	for rows.Next() {
-		if err := rows.Scan(&country, &os, &browser, &categories, &actionDay, &actionTime); err != nil {
-			log.Fatal(err)
-		}
-		//log.Printf("country: %s, os: %d, browser: %d, categories: %v, action_day: %s, action_time: %s", country, os, browser, categories, actionDay, actionTime)
-	}
-
-	if err := rows.Err(); err != nil {
-		log.Fatal(err)
-	}
-}
+//log.Printf("country: %s, os: %d, browser: %d, categories: %v, action_day: %s, action_time: %s", country, os, browser, categories, actionDay, actionTime)

@@ -2,11 +2,7 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
-	"reflect"
-
-	clickhouse_tests "github.com/ClickHouse/clickhouse-go/v2/tests/std"
 
 	_ "github.com/ClickHouse/clickhouse-go/v2"
 )
@@ -20,52 +16,19 @@ type DatabaseFrame struct {
 }
 
 func NewDatabaseFrame(name string, rows *sql.Rows) (DatabaseFrame, error) {
-	databaseFrame := DatabaseFrame{}
-	columnTypes, err := rows.ColumnTypes()
-	if err != nil {
-		return DatabaseFrame{}, err
-	}
-	databaseFrame.columnTypes = columnTypes
-	databaseFrame.name = name
-	vars := make([]any, len(columnTypes), len(columnTypes))
-	columnNames := make([]string, len(columnTypes), len(columnTypes))
-	for i := range columnTypes {
-		value := reflect.Zero(columnTypes[i].ScanType()).Interface()
-		vars[i] = &value
-		columnNames[i] = columnTypes[i].Name()
-	}
-	databaseFrame.ColumnNames = columnNames
-	databaseFrame.vars = vars
-	databaseFrame.rows = rows
-	return databaseFrame, nil
+	_ = "STUB: not implemented"
+	return *new(DatabaseFrame), nil
 }
 
 func (f DatabaseFrame) Next() ([]any, bool, error) {
-	values := make([]any, len(f.columnTypes), len(f.columnTypes))
-	for f.rows.Next() {
-		if err := f.rows.Scan(f.vars...); err != nil {
-			return nil, false, err
-		}
-		for i := range f.columnTypes {
-			ptr := reflect.ValueOf(f.vars[i])
-			values[i] = ptr.Elem().Interface()
-		}
-		return values, true, nil
-	}
-	f.rows.Close()
-	return nil, false, f.rows.Err()
+	_ = "STUB: not implemented"
+	return nil, false, nil
 }
 
 func NewNativeClient(host string, port uint16, username string, password string) (*sql.DB, error) {
+	_ = "STUB: not implemented"
 	// debug output ?debug=true
-	connection, err := clickhouse_tests.GetConnectionFromDSN(fmt.Sprintf("clickhouse://%s:%s@%s:%d/", username, password, host, port))
-	if err != nil {
-		return nil, err
-	}
-	if err := connection.Ping(); err != nil {
-		return nil, err
-	}
-	return connection, nil
+	return nil, nil
 }
 
 func main() {

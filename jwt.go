@@ -11,6 +11,4 @@ const jwtAuthMarker = " JWT AUTHENTICATION "
 type GetJWTFunc = func(ctx context.Context) (string, error)
 
 // useJWTAuth returns true if the client should use JWT auth
-func useJWTAuth(opt *Options) bool {
-	return opt.GetJWT != nil
-}
+func useJWTAuth(opt *Options) bool { _ = "STUB: not implemented"; return false }

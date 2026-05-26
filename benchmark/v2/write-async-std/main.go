@@ -1,13 +1,10 @@
 package main
 
 import (
-	"context"
 	"database/sql"
 	"fmt"
 	"log"
 	"time"
-
-	"github.com/ClickHouse/clickhouse-go/v2"
 )
 
 const ddl = `
@@ -19,22 +16,7 @@ CREATE TABLE benchmark_async (
 ) Engine Null
 `
 
-func benchmark(conn *sql.DB) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	ctx = clickhouse.Context(ctx, clickhouse.WithStdAsync(false))
-	{
-		for i := 0; i < 10_000; i++ {
-			_, err := conn.ExecContext(ctx, fmt.Sprintf(`INSERT INTO benchmark_async VALUES (
-				%d, '%s', [1, 2, 3, 4, 5, 6, 7, 8, 9], now()
-			)`, i, "Golang SQL database driver"))
-			if err != nil {
-				return err
-			}
-		}
-	}
-	return nil
-}
+func benchmark(conn *sql.DB) error { _ = "STUB: not implemented"; return nil }
 
 func main() {
 	conn, err := sql.Open("clickhouse", "clickhouse://127.0.0.1:9000")

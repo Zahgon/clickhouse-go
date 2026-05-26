@@ -1,9 +1,7 @@
 package column
 
 import (
-	"fmt"
 	"reflect"
-	"strings"
 
 	"github.com/ClickHouse/ch-go/proto"
 )
@@ -14,70 +12,55 @@ type SimpleAggregateFunction struct {
 	name   string
 }
 
-func (col *SimpleAggregateFunction) Reset() {
-	col.base.Reset()
-}
+func (col *SimpleAggregateFunction) Reset() { _ = "STUB: not implemented"; return }
 
-func (col *SimpleAggregateFunction) Name() string {
-	return col.name
-}
+func (col *SimpleAggregateFunction) Name() string { _ = "STUB: not implemented"; return "" }
 
 func (col *SimpleAggregateFunction) parse(t Type, sc *ServerContext) (_ Interface, err error) {
-	col.chType = t
-	base := strings.TrimSpace(strings.SplitN(t.params(), ",", 2)[1])
-	if col.base, err = Type(base).Column(col.name, sc); err == nil {
-		return col, nil
-	}
-	return nil, &UnsupportedColumnTypeError{
-		t: t,
-	}
+	_ = "STUB: not implemented"
+	return *new(Interface), nil
 }
 
-func (col *SimpleAggregateFunction) Type() Type {
-	return col.chType
-}
+func (col *SimpleAggregateFunction) Type() Type { _ = "STUB: not implemented"; return *new(Type) }
+
 func (col *SimpleAggregateFunction) ScanType() reflect.Type {
-	return col.base.ScanType()
+	_ = "STUB: not implemented"
+	return *new(reflect.Type)
 }
-func (col *SimpleAggregateFunction) Rows() int {
-	return col.base.Rows()
-}
+
+func (col *SimpleAggregateFunction) Rows() int { _ = "STUB: not implemented"; return 0 }
+
 func (col *SimpleAggregateFunction) Row(i int, ptr bool) any {
-	return col.base.Row(i, ptr)
+	_ = "STUB: not implemented"
+	return *new(any)
 }
+
 func (col *SimpleAggregateFunction) ScanRow(dest any, rows int) error {
-	return col.base.ScanRow(dest, rows)
+	_ = "STUB: not implemented"
+	return nil
 }
+
 func (col *SimpleAggregateFunction) Append(v any) ([]uint8, error) {
-	return col.base.Append(v)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
-func (col *SimpleAggregateFunction) AppendRow(v any) error {
-	return col.base.AppendRow(v)
-}
+
+func (col *SimpleAggregateFunction) AppendRow(v any) error { _ = "STUB: not implemented"; return nil }
+
 func (col *SimpleAggregateFunction) Decode(reader *proto.Reader, rows int) error {
-	return col.base.Decode(reader, rows)
+	_ = "STUB: not implemented"
+	return nil
 }
-func (col *SimpleAggregateFunction) Encode(buffer *proto.Buffer) {
-	col.base.Encode(buffer)
-}
+
+func (col *SimpleAggregateFunction) Encode(buffer *proto.Buffer) { _ = "STUB: not implemented"; return }
 
 func (col *SimpleAggregateFunction) ReadStatePrefix(reader *proto.Reader) error {
-	if serialize, ok := col.base.(CustomSerialization); ok {
-		if err := serialize.ReadStatePrefix(reader); err != nil {
-			return fmt.Errorf("failed to read prefix for SimpleAggregateFunction base type %s: %w", col.base.Type(), err)
-		}
-	}
-
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (col *SimpleAggregateFunction) WriteStatePrefix(buffer *proto.Buffer) error {
-	if serialize, ok := col.base.(CustomSerialization); ok {
-		if err := serialize.WriteStatePrefix(buffer); err != nil {
-			return fmt.Errorf("failed to write prefix for SimpleAggregateFunction base type %s: %w", col.base.Type(), err)
-		}
-	}
-
+	_ = "STUB: not implemented"
 	return nil
 }
 

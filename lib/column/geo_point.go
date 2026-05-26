@@ -1,9 +1,6 @@
 package column
 
 import (
-	"database/sql"
-	"database/sql/driver"
-	"fmt"
 	"reflect"
 
 	"github.com/ClickHouse/ch-go/proto"
@@ -16,147 +13,34 @@ type Point struct {
 	col  proto.ColPoint
 }
 
-func (col *Point) Reset() {
-	col.col.Reset()
-}
+func (col *Point) Reset() { _ = "STUB: not implemented"; return }
 
-func (col *Point) Name() string {
-	return col.name
-}
+func (col *Point) Name() string { _ = "STUB: not implemented"; return "" }
 
-func (col *Point) Type() Type {
-	return "Point"
-}
+func (col *Point) Type() Type { _ = "STUB: not implemented"; return *new(Type) }
 
-func (col *Point) ScanType() reflect.Type {
-	return scanTypePoint
-}
+func (col *Point) ScanType() reflect.Type { _ = "STUB: not implemented"; return *new(reflect.Type) }
 
-func (col *Point) Rows() int {
-	return col.col.Rows()
-}
+func (col *Point) Rows() int { _ = "STUB: not implemented"; return 0 }
 
-func (col *Point) Row(i int, ptr bool) any {
-	value := col.row(i)
-	if ptr {
-		return &value
-	}
-	return value
-}
+func (col *Point) Row(i int, ptr bool) any { _ = "STUB: not implemented"; return *new(any) }
 
-func (col *Point) ScanRow(dest any, row int) error {
-	switch d := dest.(type) {
-	case *orb.Point:
-		*d = col.row(row)
-	case **orb.Point:
-		*d = new(orb.Point)
-		**d = col.row(row)
-	default:
-		if scan, ok := dest.(sql.Scanner); ok {
-			return scan.Scan(col.row(row))
-		}
-		return &ColumnConverterError{
-			Op:   "ScanRow",
-			To:   fmt.Sprintf("%T", dest),
-			From: "Point",
-			Hint: fmt.Sprintf("try using *%s", col.ScanType()),
-		}
-	}
-	return nil
-}
+func (col *Point) ScanRow(dest any, row int) error { _ = "STUB: not implemented"; return nil }
 
 func (col *Point) Append(v any) (nulls []uint8, err error) {
-	switch v := v.(type) {
-	case []orb.Point:
-		nulls = make([]uint8, len(v))
-		for _, v := range v {
-			col.col.Append(proto.Point{
-				X: v.Lon(),
-				Y: v.Lat(),
-			})
-		}
-	case []*orb.Point:
-		nulls = make([]uint8, len(v))
-		for i, v := range v {
-			if v == nil {
-				nulls[i] = 1
-				col.col.Append(proto.Point{})
-			} else {
-				col.col.Append(proto.Point{
-					X: v.Lon(),
-					Y: v.Lat(),
-				})
-			}
-		}
-	default:
-		if valuer, ok := v.(driver.Valuer); ok {
-			val, err := valuer.Value()
-			if err != nil {
-				return nil, &ColumnConverterError{
-					Op:   "Append",
-					To:   "Point",
-					From: fmt.Sprintf("%T", v),
-					Hint: fmt.Sprintf("could not get driver.Valuer value, try using %s", col.Type()),
-				}
-			}
-			return col.Append(val)
-		}
-		return nil, &ColumnConverterError{
-			Op:   "Append",
-			To:   "Point",
-			From: fmt.Sprintf("%T", v),
-		}
-	}
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }
-func (col *Point) AppendRow(v any) error {
-	switch v := v.(type) {
-	case orb.Point:
-		col.col.Append(proto.Point{
-			X: v.Lon(),
-			Y: v.Lat(),
-		})
-	case *orb.Point:
-		col.col.Append(proto.Point{
-			X: v.Lon(),
-			Y: v.Lat(),
-		})
-	default:
-		if valuer, ok := v.(driver.Valuer); ok {
-			val, err := valuer.Value()
-			if err != nil {
-				return &ColumnConverterError{
-					Op:   "AppendRow",
-					To:   "Point",
-					From: fmt.Sprintf("%T", v),
-					Hint: fmt.Sprintf("could not get driver.Valuer value, try using %s", col.Type()),
-				}
-			}
-			return col.AppendRow(val)
-		}
-		return &ColumnConverterError{
-			Op:   "AppendRow",
-			To:   "Point",
-			From: fmt.Sprintf("%T", v),
-		}
-	}
+
+func (col *Point) AppendRow(v any) error { _ = "STUB: not implemented"; return nil }
+
+func (col *Point) Decode(reader *proto.Reader, rows int) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (col *Point) Decode(reader *proto.Reader, rows int) error {
-	return col.col.DecodeColumn(reader, rows)
-}
+func (col *Point) Encode(buffer *proto.Buffer) { _ = "STUB: not implemented"; return }
 
-func (col *Point) Encode(buffer *proto.Buffer) {
-	col.col.EncodeColumn(buffer)
-}
-
-func (col *Point) row(i int) orb.Point {
-	p := col.col.Row(i)
-	return orb.Point{
-		p.X,
-		p.Y,
-	}
-}
+func (col *Point) row(i int) orb.Point { _ = "STUB: not implemented"; return *new(orb.Point) }
 
 var _ Interface = (*Point)(nil)

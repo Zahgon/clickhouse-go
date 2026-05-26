@@ -1,8 +1,6 @@
 package proto
 
 import (
-	"fmt"
-
 	chproto "github.com/ClickHouse/ch-go/proto"
 )
 
@@ -12,15 +10,8 @@ type TableColumns struct {
 }
 
 func (t *TableColumns) Decode(reader *chproto.Reader, revision uint64) (err error) {
-	if t.First, err = reader.Str(); err != nil {
-		return err
-	}
-	if t.Second, err = reader.Str(); err != nil {
-		return err
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (t *TableColumns) String() string {
-	return fmt.Sprintf("first=%s, second=%s", t.First, t.Second)
-}
+func (t *TableColumns) String() string { _ = "STUB: not implemented"; return "" }

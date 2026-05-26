@@ -1,7 +1,6 @@
 package column
 
 import (
-	"fmt"
 	"reflect"
 	"regexp"
 	"strings"
@@ -19,23 +18,14 @@ var colUnEscape = strings.NewReplacer("\\`", "`", "\\\\", "\\")
 
 type Type string
 
-func (t Type) params() string {
-	switch start, end := strings.Index(string(t), "("), strings.LastIndex(string(t), ")"); {
-	case len(t) == 0, start <= 0, end <= 0, end < start:
-		return ""
-	default:
-		return string(t[start+1 : end])
-	}
-}
+func (t Type) params() string { _ = "STUB: not implemented"; return "" }
 
 type Error struct {
 	ColumnType string
 	Err        error
 }
 
-func (e *Error) Error() string {
-	return fmt.Sprintf("%s: %s", e.ColumnType, e.Err)
-}
+func (e *Error) Error() string { _ = "STUB: not implemented"; return "" }
 
 type ColumnConverterError struct {
 	Op       string
@@ -43,21 +33,13 @@ type ColumnConverterError struct {
 	From, To string
 }
 
-func (e *ColumnConverterError) Error() string {
-	var hint string
-	if len(e.Hint) != 0 {
-		hint += ". " + e.Hint
-	}
-	return fmt.Sprintf("clickhouse [%s]: converting %s to %s is unsupported%s", e.Op, e.From, e.To, hint)
-}
+func (e *ColumnConverterError) Error() string { _ = "STUB: not implemented"; return "" }
 
 type UnsupportedColumnTypeError struct {
 	t Type
 }
 
-func (e *UnsupportedColumnTypeError) Error() string {
-	return fmt.Sprintf("clickhouse: unsupported column type %q", e.t)
-}
+func (e *UnsupportedColumnTypeError) Error() string { _ = "STUB: not implemented"; return "" }
 
 type Interface interface {
 	Name() string

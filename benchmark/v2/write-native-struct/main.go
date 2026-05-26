@@ -25,24 +25,7 @@ type row struct {
 	Col3 []uint8
 }
 
-func benchmark(conn clickhouse.Conn) error {
-	batch, err := conn.PrepareBatch(context.Background(), "INSERT INTO benchmark")
-	if err != nil {
-		return err
-	}
-	for i := 0; i < 1_000_000; i++ {
-		err := batch.AppendStruct(&row{
-			Col1: uint64(i),
-			Col2: "Golang SQL database driver",
-			Col3: []uint8{1, 2, 3, 4, 5, 6, 7, 8, 9},
-			Col4: time.Now(),
-		})
-		if err != nil {
-			return err
-		}
-	}
-	return batch.Send()
-}
+func benchmark(conn clickhouse.Conn) error { _ = "STUB: not implemented"; return nil }
 
 func main() {
 	var (

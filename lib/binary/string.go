@@ -1,9 +1,3 @@
 package binary
 
-import (
-	"unsafe"
-)
-
-func unsafeStr2Bytes(str string) []byte {
-	return unsafe.Slice(unsafe.StringData(str), len(str))
-}
+func unsafeStr2Bytes(str string) []byte { _ = "STUB: not implemented"; return nil }

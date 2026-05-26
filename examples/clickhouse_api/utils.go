@@ -2,7 +2,6 @@ package clickhouse_api
 
 import (
 	"crypto/tls"
-	"math/rand"
 	"time"
 
 	"github.com/ClickHouse/clickhouse-go/v2"
@@ -13,27 +12,30 @@ import (
 const TestSet string = "examples_clickhouse_api"
 
 func GetNativeConnection(settings clickhouse.Settings, tlsConfig *tls.Config, compression *clickhouse.Compression) (driver.Conn, error) {
-	return clickhouse_tests.GetConnectionTCP(TestSet, settings, tlsConfig, compression)
+	_ = "STUB: not implemented"
+	return *new(driver.Conn), nil
 }
 
 func GetHTTPConnection(sessionName string, settings clickhouse.Settings, tlsConfig *tls.Config, compression *clickhouse.Compression) (driver.Conn, error) {
-	return clickhouse_tests.GetConnectionHTTP(TestSet, sessionName, settings, tlsConfig, compression)
+	_ = "STUB: not implemented"
+	return *new(driver.Conn), nil
 }
 
 func GetNativeTestEnvironment() (clickhouse_tests.ClickHouseTestEnvironment, error) {
-	return clickhouse_tests.GetTestEnvironment(TestSet)
+	_ = "STUB: not implemented"
+	return *new(clickhouse_tests.ClickHouseTestEnvironment), nil
 }
 
 func GetNativeConnectionWithOptions(settings clickhouse.Settings, tlsConfig *tls.Config, compression *clickhouse.Compression) (driver.Conn, error) {
-	return clickhouse_tests.GetConnectionTCP(TestSet, settings, tlsConfig, compression)
+	_ = "STUB: not implemented"
+	return *new(driver.Conn), nil
 }
 
 func CheckMinServerVersion(conn driver.Conn, major, minor, patch uint64) bool {
-	return clickhouse_tests.CheckMinServerServerVersion(conn, major, minor, patch)
+	_ = "STUB: not implemented"
+	return false
 }
 
 var randSeed = time.Now().UnixNano()
 
-func ResetRandSeed() {
-	rand.Seed(randSeed)
-}
+func ResetRandSeed() { _ = "STUB: not implemented"; return }

@@ -11,19 +11,6 @@ import "context"
 // // do something else
 // defer stopCW()
 func contextWatchdog(ctx context.Context, callback func()) (cancel func()) {
-	exit := make(chan struct{})
-
-	go func() {
-		select {
-		case <-exit:
-			return
-		case <-ctx.Done():
-			callback()
-			return
-		}
-	}()
-
-	return func() {
-		close(exit)
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -2,7 +2,6 @@ package resources
 
 import (
 	_ "embed"
-	"strings"
 
 	"go.yaml.in/yaml/v3"
 
@@ -27,37 +26,15 @@ func init() {
 }
 
 func (m *Meta) IsSupportedClickHouseVersion(v proto.Version) bool {
-	for _, version := range m.ClickhouseVersions {
-		if version.Major == v.Major && version.Minor == v.Minor {
-			// check our patch is greater
-			return v.Patch >= version.Patch
-		}
-	}
-	return proto.CheckMinVersion(m.hVersion, v)
+	_ = "STUB: not implemented"
+	return false
 }
 
-func (m *Meta) SupportedVersions() string {
-	versions := make([]string, len(m.ClickhouseVersions))
-	for i := range m.ClickhouseVersions {
-		versions[i] = m.ClickhouseVersions[i].String()
-	}
-	return strings.Join(versions, ", ")
-}
+// check our patch is greater
+
+func (m *Meta) SupportedVersions() string { _ = "STUB: not implemented"; return "" }
 
 func (m *Meta) findGreatestVersion() proto.Version {
-	var maxVersion proto.Version
-	for _, version := range m.ClickhouseVersions {
-		if version.Major > maxVersion.Major {
-			maxVersion = version
-		} else if version.Major == maxVersion.Major {
-			if version.Minor > maxVersion.Minor {
-				maxVersion = version
-			} else if version.Minor == maxVersion.Minor {
-				if version.Patch > maxVersion.Patch {
-					maxVersion = version
-				}
-			}
-		}
-	}
-	return maxVersion
+	_ = "STUB: not implemented"
+	return *new(proto.Version)
 }

@@ -2,9 +2,7 @@ package clickhouse
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
-	"os"
 )
 
 // debugfHandler is a slog.Handler that wraps the legacy Debugf function
@@ -17,62 +15,35 @@ type debugfHandler struct {
 }
 
 func (h *debugfHandler) Enabled(ctx context.Context, level slog.Level) bool {
+	_ = "STUB: not implemented"
 	// Legacy Debugf has no level filtering - all logs are enabled
-	return true
+	return false
 }
 
 func (h *debugfHandler) Handle(ctx context.Context, record slog.Record) error {
+	_ = "STUB: not implemented"
 	// Build message with attributes
-	msg := record.Message
-
-	// Collect all attributes
-	attrs := make([]any, 0, len(h.attrs)*2+record.NumAttrs()*2)
-
-	// Add pre-existing attributes (from With)
-	for _, a := range h.attrs {
-		attrs = append(attrs, a.Key, a.Value)
-	}
-
-	// Add record attributes
-	record.Attrs(func(a slog.Attr) bool {
-		attrs = append(attrs, a.Key, a.Value)
-		return true
-	})
-
-	// Format message with attributes if present
-	if len(attrs) > 0 {
-		h.debugf("%s %v", msg, attrs)
-	} else {
-		h.debugf("%s", msg)
-	}
-
 	return nil
 }
 
-func (h *debugfHandler) WithAttrs(attrs []slog.Attr) slog.Handler {
-	// Accumulate attributes for later formatting
-	newAttrs := make([]slog.Attr, len(h.attrs)+len(attrs))
-	copy(newAttrs, h.attrs)
-	copy(newAttrs[len(h.attrs):], attrs)
+// Collect all attributes
 
-	return &debugfHandler{
-		debugf: h.debugf,
-		attrs:  newAttrs,
-		groups: h.groups,
-	}
+// Add pre-existing attributes (from With)
+
+// Add record attributes
+
+// Format message with attributes if present
+
+func (h *debugfHandler) WithAttrs(attrs []slog.Attr) slog.Handler {
+	_ = "STUB: not implemented"
+	// Accumulate attributes for later formatting
+	return *new(slog.Handler)
 }
 
 func (h *debugfHandler) WithGroup(name string) slog.Handler {
+	_ = "STUB: not implemented"
 	// Accumulate groups (though legacy Debugf won't use them meaningfully)
-	newGroups := make([]string, len(h.groups)+1)
-	copy(newGroups, h.groups)
-	newGroups[len(h.groups)] = name
-
-	return &debugfHandler{
-		debugf: h.debugf,
-		attrs:  h.attrs,
-		groups: newGroups,
-	}
+	return *new(slog.Handler)
 }
 
 // noopHandler is a slog.Handler that discards all logs.
@@ -80,53 +51,50 @@ func (h *debugfHandler) WithGroup(name string) slog.Handler {
 type noopHandler struct{}
 
 func (h *noopHandler) Enabled(ctx context.Context, level slog.Level) bool {
+	_ = "STUB: not implemented"
 	// Disable all log levels
 	return false
 }
 
 func (h *noopHandler) Handle(ctx context.Context, record slog.Record) error {
+	_ = "STUB: not implemented"
 	// Discard the log
 	return nil
 }
 
 func (h *noopHandler) WithAttrs(attrs []slog.Attr) slog.Handler {
-	return h
+	_ = "STUB: not implemented"
+	return *new(slog.Handler)
 }
 
 func (h *noopHandler) WithGroup(name string) slog.Handler {
-	return h
+	_ = "STUB: not implemented"
+
+	// newDebugfLogger creates a slog.Logger that wraps the legacy Debugf function.
+	// This is used for backward compatibility when Debug=true and Debugf is provided.
+	return *new(slog.Handler)
 }
 
-// newDebugfLogger creates a slog.Logger that wraps the legacy Debugf function.
-// This is used for backward compatibility when Debug=true and Debugf is provided.
 func newDebugfLogger(debugf func(format string, v ...any)) *slog.Logger {
-	return slog.New(&debugfHandler{debugf: debugf})
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // newNoopLogger creates a slog.Logger that discards all logs.
 // This is used when no logger is configured (default behavior).
-func newNoopLogger() *slog.Logger {
-	return slog.New(&noopHandler{})
-}
+func newNoopLogger() *slog.Logger { _ = "STUB: not implemented"; return nil }
 
 // newStdoutDebugLogger creates a slog.Logger that writes debug-level logs to stdout.
 // This is used when Debug=true but no Debugf or Logger is provided.
-func newStdoutDebugLogger() *slog.Logger {
-	return slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}))
-}
+func newStdoutDebugLogger() *slog.Logger { _ = "STUB: not implemented"; return nil }
 
 // prepareConnLogger enriches a base logger with connection-specific attributes.
 // This adds context like connection ID, remote address, and protocol type.
 func prepareConnLogger(base *slog.Logger, connID int, remoteAddr, protocol string) *slog.Logger {
-	return base.With(
-		slog.Int("conn_id", connID),
-		slog.String("remote_addr", remoteAddr),
-		slog.String("protocol", protocol),
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // formatForDebugf is a helper that formats a message for the legacy debugf wrapper.
 // It's used by the debugf() methods to maintain compatibility with existing call sites.
-func formatForDebugf(format string, v ...any) string {
-	return fmt.Sprintf(format, v...)
-}
+func formatForDebugf(format string, v ...any) string { _ = "STUB: not implemented"; return "" }
